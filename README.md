@@ -2,9 +2,40 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
 
+## Dependencies
+Run `npm install` after first time cloning the base code, to download the dependencies into node_modules.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Debug
+- Create launch.json file containing
+```
+{
+  "version": "0.2.0",
+  "configurations": [
+  {
+    "name": "Launch Chrome",
+    "request": "launch",
+    "type": "chrome",
+    "url": "http://localhost:4200",
+    "webRoot": "${workspaceFolder}"
+  }
+  ]
+}
+```
+- Define break points.
+- Run `ng serve --host=127.0.0.1`
+- Execute 'Run and Debug' in Visual Studio Code.
+
+## Attendance Management API
+Clone and run the Attendance Management Rest APIs to enable integration with the services for the data.
+https://github.com/edchancdn/attendance-system
+
+## Roadmap
+- Implement authentication token when calling the APIs.
+- Implement styling.
 
 ## Code scaffolding
 

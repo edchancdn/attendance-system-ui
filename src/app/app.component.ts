@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'AttendanceManagement';
+  isCollapsed = true;
+
+  toggleMenu() {
+      this.isCollapsed = !this.isCollapsed;
+  }
 }
