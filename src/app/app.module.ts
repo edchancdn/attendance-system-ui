@@ -10,7 +10,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { StudentListComponent } from './components/student/student-list/student-list.component';
 import { AddStudentComponent } from './components/student/add-student/add-student.component';
-import { EditStudentComponent } from './components/student/edit-student/edit-student.component'; 
+import { EditStudentComponent } from './components/student/edit-student/edit-student.component';
+import { CohortListComponent } from './components/cohort/cohort-list/cohort-list.component';
+import { AddCohortComponent } from './components/cohort/add-cohort/add-cohort.component';
+import { EditCohortComponent } from './components/cohort/edit-cohort/edit-cohort.component';
+import { CohortStudentListComponent } from './components/cohortstudent/cohort-student-list/cohort-student-list.component';
+import { AddCohortStudentComponent } from './components/cohortstudent/add-cohort-student/add-cohort-student.component'; 
 
 @NgModule({
   declarations: [
@@ -18,7 +23,12 @@ import { EditStudentComponent } from './components/student/edit-student/edit-stu
     AddStudentComponent,
     HomeComponent,
     StudentListComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    CohortListComponent,
+    AddCohortComponent,
+    EditCohortComponent,
+    CohortStudentListComponent,
+    AddCohortStudentComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,35 @@
+<div *ngIf="students; else elseBlock">
+    <div class="container">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Select Student</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th width="170px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students; let i = index">
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.firstName }}</td>
+                        <td>{{ student.lastName }}</td>
+                        <td><input type="checkbox" value="{{ student.id }}" [(ngModel)]="students[i].checked">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="m-3 btn btn-sm btn-success" (click)="passBack()">
+                Add
+            </button>
+        </div>
+    </div>
+</div>
+<ng-template #elseBlock>No student record found</ng-template>

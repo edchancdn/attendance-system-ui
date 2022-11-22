@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="col-md-12">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search by Name" [(ngModel)]="lastName" />
+        <button class="btn btn-outline-secondary" (click)="searchName()">
+          Search
+        </button>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <h4>Cohorts List</h4>
+      <table class="table table-sm table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Course Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th width="300px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cohort of cohorts; let i = index">
+            <td>{{ cohort.id }}</td>
+            <td>{{ cohort.name }}</td>
+            <td>{{ cohort.courseName }}</td>
+            <td>{{ cohort.startDate | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ cohort.endDate | date: 'yyyy-MM-dd' }}</td>
+            <td>
+              <div>
+                <button type="button" (click)="viewCohortStudentRow(cohort.id)" class="m-1 btn btn-sm btn-success">Cohort Students</button>
+                <button type="button" (click)="editRow(cohort.id)" class="m-1 btn btn-sm btn-warning">Edit</button>
+                <button type="button" (click)="deleteRow(cohort.id)" class="m-1 btn btn-sm btn-danger">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="m-3 btn btn-sm btn-warning" (click)="refreshList()">
+      Refresh List
+    </button>
+    <button class="m-3 btn btn-sm btn-success" (click)="addCohort()">
+      Add
+    </button>
+  </div>

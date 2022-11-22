@@ -1,0 +1,84 @@
+<div class="container">
+    <div *ngIf="currentCohort.id" class="edit-form">
+        <h4>Cohort Students</h4>
+        <form>
+            <fieldset disabled>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div class="col-md mb-2">
+                        <input type="text" class="col-md-8 form-control" id="name" [(ngModel)]="currentCohort.name"
+                            name="name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="courseName">Course Name</label>
+                    <div class="col-md mb-2">
+                        <input type="text" class="form-control" id="courseName" [(ngModel)]="currentCohort.courseName"
+                            name="coursetName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                [(ngModel)]="selectedStartDate" ngbDatepicker #d="ngbDatepicker" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp2"
+                                [(ngModel)]="selectedEndDate" ngbDatepicker #d2="ngbDatepicker" />
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <!--
+        <pre>startDate: {{ selectedStartDate | json }}</pre>
+        -->
+        <!--
+        <pre>endDate: {{ selectedEndDate | json }}</pre>
+        -->
+        <p>{{ message }}</p>
+    </div>
+    <div *ngIf="!currentCohort.id">
+        <br />
+        <p>Cannot access this Cohort...</p>
+    </div>
+</div>
+<hr/>
+<div class="container">
+    <div class="col-md-12">
+        <!-- <h4>Students</h4> -->
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th width="170px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students; let i = index">
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.firstName }}</td>
+                    <td>{{ student.lastName }}</td>
+                    <td>
+                        <div>
+                            <button type="button" (click)="deleteStudentRow(student.id)"
+                                class="m-1 btn btn-sm btn-danger">Remove</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="m-3 btn btn-sm btn-success" (click)="addStudent()">
+        Add
+    </button>
+</div>
