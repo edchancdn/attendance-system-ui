@@ -1,34 +1,34 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Cohort } from 'src/app/models/cohort.model';
-import { Student } from 'src/app/models/student.model';
+import { Session } from 'src/app/models/session.model';
+import { CohortSessionService } from 'src/app/services/cohort-session.service';
 import { CohortService } from 'src/app/services/cohort.service';
-import { CohortStudentService } from 'src/app/services/cohort-student.service';
-import { AddCohortStudentComponent } from '../add-cohort-student/add-cohort-student.component';
-import { StudentService } from 'src/app/services/student.service';
+import { SessionService } from 'src/app/services/session.service';
+import { AddCohortSessionComponent } from '../add-cohort-session/add-cohort-session.component';
 
 @Component({
-  selector: 'app-cohort-student-list',
-  templateUrl: './cohort-student-list.component.html',
-  styleUrls: ['./cohort-student-list.component.scss'],
+  selector: 'app-cohort-session-list',
+  templateUrl: './cohort-session-list.component.html',
+  styleUrls: ['./cohort-session-list.component.scss'],
   providers: [DatePipe]
 })
-export class CohortStudentListComponent implements OnInit {
+export class CohortSessionListComponent implements OnInit {
 
   currentCohort: Cohort = {};
   message = '';
-  students?: Student[];
-  currentStudent: Student = {};
-  currentStudentIndex = -1;
-  addStudentsToCohort: Student[] = [];
+  sessions?: Session[];
+  currentSession: Session = {};
+  currentSessionIndex = -1;
+  addSessionsToCohort: Session[] = [];
 
   selectedStartDate: NgbDateStruct = {
     year: 0,
     month: 0,
     day: 0
-  }
+  };
   selectedEndDate: NgbDateStruct = {
     year: 0,
     month: 0,
@@ -37,10 +37,10 @@ export class CohortStudentListComponent implements OnInit {
 
   constructor(
     private cohortService: CohortService,
-    private cohortStudentService: CohortStudentService,
+    private cohortSessionService: CohortSessionService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private studentService: StudentService,
+    private sessionService: SessionService,
     public modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -54,17 +54,17 @@ export class CohortStudentListComponent implements OnInit {
           this.currentCohort = data;
           console.log(data);
 
-          let startDateSt = this.datePipe.transform(this.currentCohort.startDate, 'yyyyMMdd')?.toString();
+          let startDateSt = this.datePipe.transform(this.currentCohort.startDate, 'yyyyMMdd', 'UTC-0')?.toString();
           this.selectedStartDate.year = Number(startDateSt?.substring(0, 4));
           this.selectedStartDate.month = Number(startDateSt?.substring(4, 6));
           this.selectedStartDate.day = Number(startDateSt?.substring(6));
 
-          let endDateSt = this.datePipe.transform(this.currentCohort.endDate, 'yyyyMMdd')?.toString();
+          let endDateSt = this.datePipe.transform(this.currentCohort.endDate, 'yyyyMMdd', 'UTC-0')?.toString();
           this.selectedEndDate.year = Number(endDateSt?.substring(0, 4));
           this.selectedEndDate.month = Number(endDateSt?.substring(4, 6));
           this.selectedEndDate.day = Number(endDateSt?.substring(6));
 
-          this.students = this.currentCohort.students;
+          this.sessions = this.currentCohort.sessions;
         },
         error: (e) => console.error(e)
       });
@@ -72,60 +72,64 @@ export class CohortStudentListComponent implements OnInit {
 
   refreshList(): void {
     this.getCohort(this.currentCohort.id);
-    this.currentStudent = {};
-    this.currentStudentIndex = -1;
+    this.currentSession = {};
+    this.currentSessionIndex = -1;
   }
 
-  addStudent(): void {
-    // Get students
-    this.studentService.getAll()
+  addSession(): void {
+    // Get sessions
+    this.sessionService.getAll()
       .subscribe({
         next: (data) => {
-          this.addStudentsToCohort = data;
+          this.addSessionsToCohort = data;
           console.log(data);
           // Open modal form
-          const modalRef = this.modalService.open(AddCohortStudentComponent);
-          modalRef.componentInstance.students = this.addStudentsToCohort;
+          const modalRef = this.modalService.open(AddCohortSessionComponent, { size: 'lg', backdrop: 'static' });
+          modalRef.componentInstance.sessions = this.addSessionsToCohort;
           modalRef.result.then((result) => {
             if (result) {
               console.log(result);
-              // Get selected students to add
+              // Get selected sessions to add
               let add: number[] = result.filter(function (obj: { checked: any; }) {
                 return obj.checked;
               }).map(function (obj: { id: any; }) { return obj.id; });
-              this.cohortStudentService.addStudents(this.currentCohort.id, add)
+              this.cohortSessionService.addSessions(this.currentCohort.id, add)
                 .subscribe({
                   next: (res) => {
                     console.log(res);
                     //this.refreshList();
                     this.currentCohort = res;
-                    this.students = this.currentCohort.students;
+                    this.sessions = this.currentCohort.sessions;
                   },
                   error: (e) => console.error(e)
                 });
             }
+          }, (reason) => {
+            console.log(reason);
           });
         },
         error: (e) => console.error(e)
       });
-    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-    //   console.log(receivedEntry);
-    // })
   }
 
-  deleteStudentRow(index: number): void {
-    this.currentStudentIndex = -1;
+  deleteSessionRow(index: number): void {
+    this.currentSessionIndex = -1;
     let del: number[] = [index];
-    this.cohortStudentService.delete(this.currentCohort.id, del)
+    this.cohortSessionService.delete(this.currentCohort.id, del)
       .subscribe({
         next: (res) => {
           console.log(res);
           //this.refreshList();
           this.currentCohort = res;
-          this.students = this.currentCohort.students;
+          this.sessions = this.currentCohort.sessions;
         },
         error: (e) => console.error(e)
       });
+  }
+
+  viewSessionStudentRow(index: number): void {
+    // this.currentIndex = index;
+    // this.router.navigateByUrl('sessionstudent/' + index);
   }
 
 }

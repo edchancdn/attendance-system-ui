@@ -23,4 +23,12 @@ export class AddCohortStudentComponent implements OnInit {
     this.activeModal.close(this.students);
   }
 
+  checkAllCheckBox(ev: any) {
+		this.students.forEach(x => x.checked = ev.target.checked)
+	}
+
+	isAllCheckBoxChecked() {
+		return this.students.every(p => p.checked);
+	}
+
 }

@@ -12,7 +12,7 @@
       <table class="table table-sm table-striped table-bordered">
         <thead>
           <tr>
-            <th>#</th>
+            <th>Cohort ID</th>
             <th>Name</th>
             <th>Course Name</th>
             <th>Start Date</th>
@@ -25,11 +25,12 @@
             <td>{{ cohort.id }}</td>
             <td>{{ cohort.name }}</td>
             <td>{{ cohort.courseName }}</td>
-            <td>{{ cohort.startDate | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ cohort.endDate | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ cohort.startDate | date: 'yyyy-MM-dd' : 'UTC-0' }}</td>
+            <td>{{ cohort.endDate | date: 'yyyy-MM-dd' : 'UTC-0' }}</td>
             <td>
               <div>
-                <button type="button" (click)="viewCohortStudentRow(cohort.id)" class="m-1 btn btn-sm btn-success">Cohort Students</button>
+                <button type="button" (click)="viewCohortStudentRow(cohort.id)" class="m-1 btn btn-sm btn-success">Students</button>
+                <button type="button" (click)="viewCohortSessionRow(cohort.id)" class="m-1 btn btn-sm btn-success">Sessions</button>
                 <button type="button" (click)="editRow(cohort.id)" class="m-1 btn btn-sm btn-warning">Edit</button>
                 <button type="button" (click)="deleteRow(cohort.id)" class="m-1 btn btn-sm btn-danger">Delete</button>
               </div>
@@ -44,4 +45,13 @@
     <button class="m-3 btn btn-sm btn-success" (click)="addCohort()">
       Add
     </button>
+  </div>
+
+  <div>
+    <app-confirmation-modal #confirmationModal (newConfirmationEvent)="getConfirmationValue($event)"
+      [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+    </app-confirmation-modal>
+    <app-message-modal #messageModal (newConfirmationEvent)="getMessageValue($event)"
+      [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+    </app-message-modal>
   </div>

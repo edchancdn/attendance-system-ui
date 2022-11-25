@@ -10,10 +10,10 @@
             <table class="table table-sm table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Student ID</th>
                         <th>Firstname</th>
                         <th>Lastname</th>
-                        <th width="170px">Action</th>
+                        <th width="60px"><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +27,7 @@
                 </tbody>
             </table>
             <button class="m-3 btn btn-sm btn-success" (click)="passBack()">
-                Add
+                Select
             </button>
         </div>
     </div>

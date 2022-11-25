@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Student } from 'src/app/models/student.model';
-import { StudentService } from 'src/app/services/student.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Session } from 'src/app/models/session.model';
+import { SessionService } from 'src/app/services/session.service';
 import { ConfirmationModalComponent } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
 import { MessageModalComponent } from 'src/app/shared/message-modal/message-modal.component';
 
 @Component({
-  selector: 'app-student-list',
-  templateUrl: './student-list.component.html',
-  styleUrls: ['./student-list.component.scss']
+  selector: 'app-session-list',
+  templateUrl: './session-list.component.html',
+  styleUrls: ['./session-list.component.scss']
 })
-export class StudentListComponent implements OnInit {
+export class SessionListComponent implements OnInit {
 
   @ViewChild('messageModal')
   private messageModal!: MessageModalComponent;
@@ -23,16 +24,21 @@ export class StudentListComponent implements OnInit {
   modalBody: string = '';
   modalButtonColor: string = 'btn-outline-primary';
 
-  students?: Student[];
-  currentStudent: Student = {};
+  sessions?: Session[];
+  currentSession: Session = {};
   currentIndex = -1;
-  lastName = '';
+  sessionDate: NgbDateStruct = {
+    year: 0,
+    month: 0,
+    day: 0
+  }
 
-  constructor(private studentService: StudentService,
+  constructor(
+    private sessionService: SessionService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.retrieveStudents();
+    this.retrieveSessions();
   }
 
   async openMessageModal() {
@@ -49,11 +55,11 @@ export class StudentListComponent implements OnInit {
     }
   }
 
-  retrieveStudents(): void {
-    this.studentService.getAll()
+  retrieveSessions(): void {
+    this.sessionService.getAll()
       .subscribe({
         next: (data) => {
-          this.students = data;
+          this.sessions = data;
           console.log(data);
         },
         error: (e) => console.error(e)
@@ -61,25 +67,25 @@ export class StudentListComponent implements OnInit {
   }
 
   refreshList(): void {
-    this.retrieveStudents();
-    this.currentStudent = {};
+    this.retrieveSessions();
+    this.currentSession = {};
     this.currentIndex = -1;
   }
 
-  setActiveStudent(student: Student, index: number): void {
-    this.currentStudent = student;
+  setActiveSession(session: Session, index: number): void {
+    this.currentSession = session;
     this.currentIndex = index;
   }
 
-  addStudent(): void {
-    this.router.navigateByUrl('addstudent');
+  addSession(): void {
+    this.router.navigateByUrl('addsession');
   }
 
   deleteRow(index: number): void {
     this.currentIndex = index
     this.modalStyle = 'modal-style-danger';
-    this.modalTitle = 'Delete student';
-    this.modalBody = 'Are you sure to delete this student?';
+    this.modalTitle = 'Delete session';
+    this.modalBody = 'Are you sure to delete this session?';
     this.openConfirmationModal();
   }
 
@@ -91,16 +97,16 @@ export class StudentListComponent implements OnInit {
 
   confirmedDeleteRow(index: number): void {
     this.currentIndex = -1;
-    this.studentService.delete(index)
+    this.sessionService.delete(index)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          //console.log(res);
           this.refreshList();
         },
         error: (e) => {
-          console.error(e)
+          //console.error(e)
           this.modalStyle = 'modal-style-danger';
-          this.modalTitle = 'Student not deleted';
+          this.modalTitle = 'Cannot delete session';
           this.modalBody = e.error.message.toString();
           this.openMessageModal();
         }
@@ -109,21 +115,30 @@ export class StudentListComponent implements OnInit {
 
   editRow(index: number): void {
     this.currentIndex = index;
-    this.router.navigateByUrl('editstudent/' + index);
+    this.router.navigateByUrl('editsession/' + index);
   }
 
-  searchLastName(): void {
-    this.currentStudent = {};
+  viewSessionStudentRow(index: number): void {
+    this.currentIndex = index;
+    this.router.navigateByUrl('sessionstudent/' + index);
+  }
+
+
+  searchSessionDate(): void {
+    this.currentSession = {};
     this.currentIndex = -1;
-    this.studentService.findByLastName(this.lastName)
+    let sessionDt = this.sessionDate?.year.toString() + '-'
+      + this.sessionDate?.month.toString() + '-'
+      + this.sessionDate?.day.toString();
+    this.sessionService.findByDate(sessionDt)
       .subscribe({
         next: (data) => {
-          this.students = data;
+          this.sessions = data;
           console.log(data);
         },
         error: (e) => {
           console.error(e);
-          this.students = [];
+          this.sessions = [];
         }
       });
   }
