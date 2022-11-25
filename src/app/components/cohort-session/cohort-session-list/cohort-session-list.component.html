@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="currentCohort.id" class="edit-form">
-        <h4>Cohort Students</h4>
+        <h4>Cohort Sessions</h4>
         <form>
             <fieldset disabled>
                 <div class="form-group">
@@ -37,12 +37,6 @@
                 </div>
             </fieldset>
         </form>
-        <!--
-        <pre>startDate: {{ selectedStartDate | json }}</pre>
-        -->
-        <!--
-        <pre>endDate: {{ selectedEndDate | json }}</pre>
-        -->
         <p>{{ message }}</p>
     </div>
     <div *ngIf="!currentCohort.id">
@@ -53,32 +47,37 @@
 <hr/>
 <div class="container">
     <div class="col-md-12">
-        <!-- <h4>Students</h4> -->
+        <!-- <h4>Sessions</h4> -->
         <table class="table table-sm table-striped table-bordered">
             <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th width="170px">Action</th>
-                </tr>
+              <tr>
+                <th>Session ID</th>
+                <th>Session Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th width="100px">Action</th>
+              </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let student of students; let i = index">
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.firstName }}</td>
-                    <td>{{ student.lastName }}</td>
-                    <td>
-                        <div>
-                            <button type="button" (click)="deleteStudentRow(student.id)"
-                                class="m-1 btn btn-sm btn-danger">Remove</button>
-                        </div>
-                    </td>
-                </tr>
+              <tr *ngFor="let session of sessions; let i = index">
+                <td>{{ session.id }}</td>
+                <td>{{ session.sessionDate | date: 'yyyy-MM-dd' : 'UTC-0' }}</td>
+                <td>{{ session.startTime | toTwelveHoursBase }}</td>
+                <td>{{ session.endTime | toTwelveHoursBase }}</td>
+                <td>
+                  <div>
+                    <!--
+                    <button type="button" (click)="viewSessionStudentRow(session.id)"
+                      class="m-1 btn btn-sm btn-success">Students</button>
+                    -->
+                    <button type="button" (click)="deleteSessionRow(session.id)" class="m-1 btn btn-sm btn-danger">Delete</button>
+                  </div>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
     </div>
-    <button class="m-3 btn btn-sm btn-success" (click)="addStudent()">
+    <button class="m-3 btn btn-sm btn-success" (click)="addSession()">
         Add
     </button>
 </div>

@@ -1,0 +1,71 @@
+<div class="container">
+    <div *ngIf="currentSession.id" class="edit-form">
+        <h4>Session Students</h4>
+        <form>
+            <fieldset disabled>
+                <div class="form-group">
+                    <label for="sessionDate">Session Date</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                [(ngModel)]="selectedSessionDate" ngbDatepicker #d="ngbDatepicker" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="startTime">Start Time</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <ngb-timepicker [(ngModel)]="selectedStartTime" [meridian]="meridian" name="dp2"></ngb-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="endTime">End Time</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <ngb-timepicker [(ngModel)]="selectedEndTime" [meridian]="meridian" name="dp3"></ngb-timepicker>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <p>{{ message }}</p>
+    </div>
+    <div *ngIf="!currentSession.id">
+        <br />
+        <p>Cannot access this Session...</p>
+    </div>
+</div>
+<hr/>
+<div class="container">
+    <div class="col-md-12">
+        <!-- <h4>Students</h4> -->
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th width="170px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students; let i = index">
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.firstName }}</td>
+                    <td>{{ student.lastName }}</td>
+                    <td>
+                        <div>
+                            <button type="button" (click)="deleteStudentRow(student.id)"
+                                class="m-1 btn btn-sm btn-danger">Remove</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="m-3 btn btn-sm btn-success" (click)="addStudent()">
+        Add
+    </button>
+</div>

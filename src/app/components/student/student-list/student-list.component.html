@@ -12,7 +12,7 @@
     <table class="table table-sm table-striped table-bordered">
       <thead>
         <tr>
-          <th>#</th>
+          <th>Student ID</th>
           <th>Firstname</th>
           <th>Lastname</th>
           <th width="170px">Action</th>
@@ -39,4 +39,13 @@
   <button class="m-3 btn btn-sm btn-success" (click)="addStudent()">
     Add
   </button>
+</div>
+
+<div>
+  <app-confirmation-modal #confirmationModal (newConfirmationEvent)="getConfirmationValue($event)"
+    [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+  </app-confirmation-modal>
+  <app-message-modal #messageModal (newConfirmationEvent)="getMessageValue($event)"
+    [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+  </app-message-modal>
 </div>

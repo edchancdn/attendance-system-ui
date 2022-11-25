@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="submit-form">
+        <div *ngIf="!submitted">
+            <h4>Add Session</h4>
+            <form>
+                <div class="form-group">
+                    <label for="sessionDate">Session Date</label>
+                    <div class="col-md-2 mb-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="selectedSessionDate"
+                                ngbDatepicker #d="ngbDatepicker" />
+                            <button class="btn btn-outline-secondary bi bi-calendar3 glyphicon glyphicon-calendar" (click)="d.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="startTime">Start Time</label>
+                    <div class="col-md-2 mb-4">
+                        <div class="input-group">
+                            <ngb-timepicker [(ngModel)]="selectedStartTime" [meridian]="meridian" name="dp2"></ngb-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="endTime">End Time</label>
+                    <div class="col-md-2 mb-4">
+                        <div class="input-group">
+                            <ngb-timepicker [(ngModel)]="selectedEndTime" [meridian]="meridian" name="dp3"></ngb-timepicker>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button (click)="saveSession()" class="m-3 btn btn-sm btn btn-success">Submit</button>
+            <button class="m-3 btn btn-sm btn btn-warning" (click)="cancel()">
+                Cancel
+            </button>
+        </div>
+        <div *ngIf="submitted">
+            <div>Session was submitted successfully!</div>
+            <button class="m-3 btn btn-sm btn-success" (click)="newSession()">Add</button>
+        </div>
+    </div>
+</div>

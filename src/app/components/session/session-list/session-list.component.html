@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="col-md-12">
+    <div class="input-group mb-3">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="sessionDate" ngbDatepicker
+        #d="ngbDatepicker" />
+      <button class="btn btn-outline-secondary bi bi-calendar3 glyphicon glyphicon-calendar" (click)="d.toggle()"
+        type="button"></button>
+      <button class="btn btn-outline-secondary" (click)="searchSessionDate()">
+        Search
+      </button>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <h4>Sessions List</h4>
+    <table class="table table-sm table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Session ID</th>
+          <th>Session Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th width="225px">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let session of sessions; let i = index">
+          <td>{{ session.id }}</td>
+          <td>{{ session.sessionDate | date: 'yyyy-MM-dd' : 'UTC-0' }}</td>
+          <td>{{ session.startTime | toTwelveHoursBase }}</td>
+          <td>{{ session.endTime | toTwelveHoursBase }}</td>
+          <td>
+            <div>
+              <button type="button" (click)="viewSessionStudentRow(session.id)"
+                class="m-1 btn btn-sm btn-success">Students</button>
+              <button type="button" (click)="editRow(session.id)" class="m-1 btn btn-sm btn-warning">Edit</button>
+              <button type="button" (click)="deleteRow(session.id)" class="m-1 btn btn-sm btn-danger">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="m-3 btn btn-sm btn-warning" (click)="refreshList()">
+    Refresh List
+  </button>
+  <button class="m-3 btn btn-sm btn-success" (click)="addSession()">
+    Add
+  </button>
+</div>
+
+<div>
+  <app-confirmation-modal #confirmationModal (newConfirmationEvent)="getConfirmationValue($event)"
+    [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+  </app-confirmation-modal>
+  <app-message-modal #messageModal (newConfirmationEvent)="getMessageValue($event)"
+    [modalStyle]="modalStyle" [modalTitle]="modalTitle" [modalBody]="modalBody" [modalButtonColor]="modalButtonColor">
+  </app-message-modal>
+</div>

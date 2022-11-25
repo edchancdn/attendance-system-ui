@@ -1,0 +1,38 @@
+<div *ngIf="sessions; else elseBlock">
+    <div class="container">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Select Session</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Session ID</th>
+                        <th>Session Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th width="60px"><input type="checkbox" [checked]="isAllCheckBoxChecked()"
+                                (change)="checkAllCheckBox($event)"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let session of sessions; let i = index">
+                        <td>{{ session.id }}</td>
+                        <td>{{ session.sessionDate | date: 'yyyy-MM-dd' : 'UTC-0' }}</td>
+                        <td>{{ session.startTime | toTwelveHoursBase }}</td>
+                        <td>{{ session.endTime | toTwelveHoursBase }}</td>
+                        <td><input type="checkbox" value="{{ session.id }}" [(ngModel)]="sessions[i].checked">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="m-3 btn btn-sm btn-success" (click)="passBack()">
+                Select
+            </button>
+        </div>
+    </div>
+</div>
+<ng-template #elseBlock>No session record found</ng-template>
